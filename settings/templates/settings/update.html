@@ -1,0 +1,232 @@
+{% extends 'admin/layouts/admin.html' %} {% load static %} {% block content %}
+
+<div class="p-4">
+  <ol class="flex text-gray-500 font-semibold dark:text-white-dark pb-4">
+    <li>
+      <a
+        href="javascript:;"
+        class="hover:text-gray-500/70 dark:hover:text-white-dark/70"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 shrink-0"
+        >
+          <path
+            opacity="0.5"
+            d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+          ></path>
+          <path
+            d="M12 15L12 18"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          ></path>
+        </svg>
+      </a>
+    </li>
+    <li class="before:content-['/'] before:px-1.5">
+      <a
+        href="javascript:;"
+        class="text-black dark:text-white-light hover:text-black/70 dark:hover:text-white-light/70"
+        >Chỉnh sửa</a
+      >
+    </li>
+  </ol>
+  <div class="panel">
+    <h5 class="mb-5 text-lg font-semibold dark:text-white-light">
+      Chỉnh sửa setting
+    </h5>
+    <div>
+      <form
+        id="settingForm"
+        method="post"
+        enctype="multipart/form-data"
+        action="{% url 'setting-update' %}"
+        class="space-y-5"
+      >
+        {% csrf_token %}
+
+        <div class="flex w-full gap-4">
+          <div class="panel w-full p-0">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4 px-4 pb-4">
+              <div>
+                <label
+                  class="mt-2"
+                  for="logo"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Logo</label
+                >
+                <div class="flex items-center justify-center">
+                  <label
+                    for="logo"
+                    class="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 overflow-hidden"
+                  >
+                    <div
+                      class="flex flex-col items-center justify-center pt-5 pb-6 mb-6"
+                    >
+                      <svg
+                        class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span class="font-semibold">Click to upload image</span>
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">
+                        PNG, JPG, JPEG (Maximum 2MB)
+                      </p>
+                    </div>
+                    <img
+                      id="logoPreview"
+                      class="hidden w-full object-contain"
+                      style="max-height: 200px"
+                      src="{{ setting.logo_url|default_if_none:'' }}"
+                      alt="Image preview"
+                    />
+                    <input
+                      id="logo"
+                      type="file"
+                      name="logo"
+                      class="hidden"
+                      accept="image/*"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="mt-2" for="email">Email</label>
+                  <input
+                    id="email"
+                    type="text"
+                    name="email"
+                    class="form-input"
+                    value="{{ setting.email }}"
+                  />
+                </div>
+                <div>
+                  <label class="mt-2" for="phone">Phone</label>
+                  <input
+                    id="phone"
+                    type="text"
+                    name="phone"
+                    class="form-input"
+                    value="{{ setting.phone }}"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="mt-2" for="address">Address</label>
+                <textarea
+                  id="address"
+                  name="address"
+                  class="form-input"
+                  rows="4"
+                  >{{ setting.address }}</textarea
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end mt-8">
+          <button
+            type="submit"
+            onclick="submitForm(event)"
+            class="btn btn-primary"
+          >
+            Chỉnh sửa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% if setting.logo_url and setting.logo_url != '' %}
+<script>
+  $("#logoPreview").attr("src", "{{ setting.logo_url }}").removeClass("hidden");
+</script>
+{% endif %}
+
+<script defer src="{% static 'cassets/js/sweetalert.min.js' %}"></script>
+<script>
+  function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#" + previewId)
+          .attr("src", e.target.result)
+          .removeClass("hidden");
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $(document).ready(function () {
+    $("#logo").change(function () {
+      previewImage(this, "logoPreview");
+    });
+  });
+
+  function submitForm(event) {
+    const settingForm = document.getElementById("settingForm");
+    event.preventDefault();
+    const formData = new FormData(settingForm);
+
+    fetch(settingForm.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        showMessage(data.message, data.status);
+        if (data.status === "success" && data.redirect) {
+          setTimeout(() => {
+            window.location.href = data.redirect;
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        showMessage(
+          "An error occurred while processing your request.",
+          "error"
+        );
+      });
+  }
+  function showMessage(msg = "", type = "success") {
+    const toast = window.Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+    toast.fire({
+      icon: type,
+      title: msg,
+      padding: "2em",
+    });
+  }
+</script>
+{% endblock %}
