@@ -17,13 +17,6 @@ load_dotenv()
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp', 'gif', 'pdf', 'mp4', 'zip', 'doc', 'docx'}
 
-# s3_client = boto3.client('s3',
-#     endpoint_url=os.getenv('R2_ENDPOINT_URL'),
-#     aws_access_key_id=os.getenv('R2_ACCESS_KEY'),
-#     aws_secret_access_key=os.getenv('R2_SECRET_KEY'),
-#     region_name='auto'
-# )
-
 def uploadFile(files, paths_cdn):
     print(files)
     if 'file' not in files:
@@ -48,7 +41,6 @@ def uploadFile(files, paths_cdn):
                 cleaned_filename = remove_special_characters(file.name)
                 file_path = save_file(file, path)
                 if file_path:
-                    resize_image(file_path)
                     # Return relative path for URL construction
                     return f"{path}/{cleaned_filename}"
                 return False
@@ -65,30 +57,6 @@ def pathByDate():
     month = now.month
     day = now.day
     return f"{year}/{month}/{day}"
-
-def resize_image(file_path, size=(800, 600)):
-
-    dir_name = os.path.dirname(file_path)
-
-    if not os.path.exists(dir_name):
-        print(f"Directory does not exist: {dir_name}")
-    else:
-        print(f"Directory already exists: {dir_name}")
-
-    if not os.path.exists(file_path):
-        print(f"1File does not exist: {file_path}")
-    else:
-        print(f"1File exists: {file_path}")
-
-    try:
-        print("Opening image...")
-
-        with Image.open(file_path) as img:
-            print(f"Image format: {img.format}")
-            img.thumbnail(size)
-            img.save(file_path)
-    except Exception as e:
-        print(f"Error processing file: {e}")
 
 def remove_special_characters(filename):
     pattern = r'[^a-zA-Z0-9_.]'
