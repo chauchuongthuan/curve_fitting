@@ -15,7 +15,7 @@ import os
 load_dotenv()
 
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp', 'gif', 'pdf', 'mp4', 'zip', 'doc', 'docx'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg','webp', 'gif', 'pdf', 'mp4', 'zip', 'doc', 'docx', 'xlsx'}
 
 def uploadFile(files, paths_cdn):
     print(files)

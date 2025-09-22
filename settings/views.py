@@ -49,7 +49,7 @@ class SettingListView:
                 return JsonResponse({
                     'status': 'success',
                     'message': 'Cập nhật thông tin thành công!',
-                    'redirect': reverse('setting-update')
+                    'redirect': reverse('settings')
                 })
             except Exception as e:
                 return JsonResponse({
