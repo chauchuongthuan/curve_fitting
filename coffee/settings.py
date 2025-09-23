@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "storages",
     "settings",
+    "indexData",
 ]
 
 MIDDLEWARE = [

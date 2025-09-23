@@ -24,6 +24,8 @@ class IndexDataViewSet(APIView):
                 return Response({'success': False, 'message': 'No file uploaded'}, status=status.HTTP_400_BAD_REQUEST)
             
             # Load the uploaded Excel file
+            print("file api:::", file)
+            print("api:::", type(file))
             wb = openpyxl.load_workbook(file)
             
             # Create a new workbook for output
@@ -72,6 +74,10 @@ class IndexDataViewSet(APIView):
                         else:
                             # Apply formula: (current / base) * 100
                             output_ws.cell(row=row, column=col).value = (cell.value / base_values[col]) * 100
+            
+            # Remove the default empty sheet if it exists
+            if 'Sheet' in output_wb.sheetnames:
+                del output_wb['Sheet']
             
             # Save to BytesIO
             output_io = io.BytesIO()
