@@ -115,12 +115,12 @@ class IndexDataCreateView(View):
                 
                 return JsonResponse({
                     'status': 'success',
-                    'message': 'Cập nhật thông tin thành công!',
+                    'message': 'Uploaded successfully!',
                     'file_path': f"http://localhost:8000/media/{relative_path}",
                 })
             except Exception as e:
                 return JsonResponse({
                     'status': 'error',
-                    'message': f'Lỗi khi cập nhật thông tin: {str(e)}'
+                    'message': f'Error when uploading file: {str(e)}'
                 }, status=400)
         return render(request, 'indexData/create.html')
