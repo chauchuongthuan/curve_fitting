@@ -30,14 +30,11 @@ urlpatterns = [
 
     path('', HomeView.as_view(), name='home_page'),
 
-    # CMS
-    # path('cms/settings/', include('settings.urls')),
-    path('cms/indexdata/', include('indexData.urls')),
+    path('indexdata/', include('indexData.urls')),
 
     # AUTH CMS
     path('cms/login/', LoginView.as_view(), name='login_cms'),
     path('cms/logout/', logout_account, name='logout_cms'),
-    # API
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
