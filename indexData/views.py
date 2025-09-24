@@ -234,6 +234,16 @@ class IndexDataCreateView(View):
                             total_alpha_sq_cell = output_ws.cell(row=end_row + 1, column=col_alpha_sq)
                             total_alpha_sq_cell.value = f"=SUM({sum_range_alpha})"
                             total_alpha_sq_cell.number_format = '0.0%'
+                        
+                        # SUM all = SUM beta^2 + alpha^2
+                        col_all = max_col_all + 12
+                        if end_row >= start_row:
+                            # Create formula: SUM(beta^2) + SUM(alpha^2)
+                            beta_sum_ref = get_column_letter(col_beta_sq) + str(end_row + 1)
+                            alpha_sum_ref = get_column_letter(col_alpha_sq) + str(end_row + 1)
+                            total_all_cell = output_ws.cell(row=end_row + 1, column=col_all)
+                            total_all_cell.value = f"={beta_sum_ref} + {alpha_sum_ref}"
+                            total_all_cell.number_format = '0.0%'
 
                 # Remove default sheet if it exists
                 if 'Sheet' in output_wb.sheetnames:
