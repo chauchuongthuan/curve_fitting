@@ -79,3 +79,4 @@ drf-yasg==1.21.8
 django-cors-headers==4.6.0
 numpy==2.3.3
 scipy==1.16.2
+matplotlib==3.10.6

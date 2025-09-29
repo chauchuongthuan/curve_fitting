@@ -22,6 +22,10 @@ import io
 from django.conf import settings
 from coffee.helpers import gennerate_random_string
 import math
+from scipy.optimize import *
+import pandas as pd
+from scipy.optimize import minimize
+
 
 class IndexDataCreateView(View):
     @login_required(login_url="login_cms")
@@ -129,8 +133,8 @@ class IndexDataCreateView(View):
                     new_columns = [
                         "Phase Forecast", "P(x) Forecast",  # Cột forecast trước
                         "Phase Correlation", "P(x) Correlation",  # Cột correlation sau
-                        "Year", "Beta", "Phase", "P(X) Density", 
-                        "Alpha", "Phase", "P(X) Density"
+                        "Year", "Beta", "Beta Phase", "Beta P(X) Density", 
+                        "Alpha", "Alpha Phase", "Alpha P(X) Density"
                     ]
                     
                     for i, col_name in enumerate(new_columns):
@@ -141,7 +145,7 @@ class IndexDataCreateView(View):
                         for row in range(2, len(base_year) + 2):
                             if row <= max_row:  # Ensure we don't exceed sheet boundaries
                                 output_ws.cell(row=row, column=max_col_all + 5).value = base_year[row - 2] if row - 2 < len(base_year) else None
-                                output_ws.cell(row=row, column=max_col_all + 6).value = "β" + str(row - 2)
+                                output_ws.cell(row=row, column=max_col_all + 6).value = "β" + str(row - 2 + 1)
                                 
                                 beta = 1 / math.sqrt(len(base_year) * 2) if base_year else 0
                                 output_ws.cell(row=row, column=max_col_all + 7).value = beta
@@ -153,7 +157,7 @@ class IndexDataCreateView(View):
                                     beta_sq_cell.value = f"={beta_cell_ref}^2"
                                     beta_sq_cell.number_format = '0.0%'
 
-                                output_ws.cell(row=row, column=max_col_all + 9).value = "α" + str(row - 2)
+                                output_ws.cell(row=row, column=max_col_all + 9).value = "α" + str(row - 2 + 1)
                                 alpha = 1 / math.sqrt(len(base_year) * 2) if base_year else 0
                                 output_ws.cell(row=row, column=max_col_all + 10).value = alpha
 
@@ -277,3 +281,4 @@ class IndexDataCreateView(View):
                     'message': f'Error when uploading file: {str(e)}'
                 }, status=400)
         return render(request, 'indexData/create.html')
+        
